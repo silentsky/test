@@ -2,39 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>uBO Scriptlet Test Page</title>
+    <title>uBlock Origin ACIS Test Lab</title>
     <style>
-        body { font-family: sans-serif; line-height: 1.6; padding: 20px; }
-        #status { padding: 10px; border-radius: 5px; font-weight: bold; }
-        .running { background-color: #ffcccc; color: #990000; }
-        .blocked { background-color: #ccffcc; color: #006600; }
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; background: #f4f4f9; }
+        .box { border: 2px solid #ccc; padding: 15px; margin-bottom: 20px; background: white; border-radius: 8px; }
+        .success { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+        code { background: #eee; padding: 2px 4px; }
     </style>
 </head>
 <body>
 
-    <h1>uBO Scriptlet Lab</h1>
-    <p>Target property: <code>window.badBotActive</code></p>
-    
-    <div id="status" class="running">
-        Script Status: RUNNING (Property not aborted)
+    <h1>uBlock Origin ACIS Test Lab</h1>
+    <p>Use these scenarios to practice writing <code>##+js(acis, ...)</code> filters.</p>
+
+    <div class="box">
+        <h3>Scenario 1: Simple Property (Math)</h3>
+        <p>This script checks <code>Math.random()</code>. If the filter works, the script will crash before it prints "Execution Finished".</p>
+        <div id="status-1" class="fail">Script Executed Successfully (Filter NOT working)</div>
     </div>
 
-<script>
-    // 1. Define the property
-    window.badBotActive = true;
+    <script>
+        (function() {
+            // Accessing Math will trigger the acis trap if configured
+            var value = Math.random(); 
+            document.getElementById('status-1').innerText = "Script Executed Successfully (Filter NOT working)";
+            console.log("Scenario 1: Math accessed.", value);
+        })();
+    </script>
 
-    // 2. Wrap the "bad" action in a function or a slight delay
-    // This gives uBO a better chance to hook the 'get' action
-    function checkStatus() {
-        if (window.badBotActive) {
-            console.log("If you see this, acis FAILED.");
-            document.getElementById('status').innerText = "Script Status: RUNNING (Failed to Abort)";
-            document.getElementById('status').className = "running";
-        }
-    }
+    <div class="box">
+        <h3>Scenario 2: Specific String Match</h3>
+        <p>This script uses <code>navigator.userAgent</code>. We want to block scripts containing the word <code>"SecretToken"</code>.</p>
+        <div id="status-2" class="fail">Secret Script Ran (Filter NOT working)</div>
+    </div>
 
-    checkStatus();
-</script>
+    <script>
+        (function() {
+            const spy = navigator.userAgent;
+            const token = "SecretToken"; // The filter should look for this string
+            document.getElementById('status-2').innerText = "Secret Script Ran (Filter NOT working)";
+            console.log("Scenario 2: Ran with " + token);
+        })();
+    </script>
+
+    <div class="box">
+        <h3>Scenario 3: Property Chain</h3>
+        <p>This script accesses <code>window.document.cookie</code>. Target the property <code>document.cookie</code>.</p>
+        <div id="status-3" class="fail">Cookie Script Ran (Filter NOT working)</div>
+    </div>
+
+    <script>
+        (function() {
+            var c = document.cookie;
+            document.getElementById('status-3').innerText = "Cookie Script Ran (Filter NOT working)";
+            console.log("Scenario 3: Cookie accessed.");
+        })();
+    </script>
 
 </body>
 </html>
