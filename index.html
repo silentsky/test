@@ -2,52 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>uBO ACIS Advanced Lab</title>
+    <title>uBO Selective ACIS Lab</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px; background: #eef2f3; }
-        .card { background: white; border-radius: 10px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .status { padding: 10px; border-radius: 5px; margin-top: 10px; font-weight: bold; background: #ffebee; color: #c62828; }
-        code { background: #333; color: #f8f8f2; padding: 2px 6px; border-radius: 4px; }
-        h2 { margin-top: 0; color: #2c3e50; }
+        body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
+        .container { display: flex; gap: 20px; }
+        .card { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .status { margin-top: 15px; padding: 10px; font-weight: bold; border: 1px solid #ddd; }
+        .running { background: #fff3cd; color: #856404; }
+        .finished { background: #d4edda; color: #155724; }
+        .aborted { background: #f8d7da; color: #721c24; }
     </style>
 </head>
 <body>
 
-    <h1>Advanced ACIS Practice</h1>
+    <h1>Targeted Script Killing</h1>
+    <p>Both scripts below use <code>console.log</code>. Your goal is to kill <strong>only</strong> the one containing the word <code>"bad-actor"</code>.</p>
 
-    <div class="card">
-        <h2>1. Deep Property Chains</h2>
-        <p>This script checks <code>window.performance.navigation.type</code>. You must target the specific sub-property.</p>
-        <div id="status-a" class="status">Script Active (Filter Failed)</div>
+    <div class="container">
+        <div class="card">
+            <h2>Script A (Safe)</h2>
+            <p>Contains: <code>"everything-is-fine"</code></p>
+            <div id="status-a" class="status running">Waiting...</div>
+        </div>
+
+        <div class="card">
+            <h2>Script B (Malicious)</h2>
+            <p>Contains: <code>"bad-actor"</code></p>
+            <div id="status-b" class="status running">Waiting...</div>
+        </div>
     </div>
+
     <script>
         (function() {
-            const navType = window.performance.navigation.type;
-            document.getElementById('status-a').innerText = "✅ Script Completed Execution";
-            document.getElementById('status-a').style.background = "#e8f5e9";
-            document.getElementById('status-a').style.color = "#2e7d32";
+            const secret = "everything-is-fine";
+            console.log("Safe Script checking in..."); 
+            // If the script isn't killed, this runs:
+            document.getElementById('status-a').innerText = "✅ Safe Script Finished";
+            document.getElementById('status-a').className = "status finished";
         })();
     </script>
 
-    <div class="card">
-        <h2>2. Data URI Script (The 1.37.0+ Feature)</h2>
-        <p>This script isn't text; it's a Base64 encoded <code>src</code> attribute. This mimics modern obfuscation.</p>
-        <div id="status-b" class="status">Base64 Script Active (Filter Failed)</div>
-    </div>
-    <script src="data:text/javascript;base64,Y29uc29sZS5sb2coJ0Jhc2U2NCBSYW4nKTsgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3N0YXR1cy1iJykuaW5uZXJUZXh0ID0gJ+oZVCBCYXNlNjQgRGVjb2RlZCAmIFJhbic7IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdzdGF0dXMtYicpLnN0eWxlLmJhY2tncm91bmQgPSAnI2U4ZjVlOSc7IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdzdGF0dXMtYicpLnN0eWxlLmNvbG9yID0gJyMyZTdkMzInOw=="></script>
-
-    <div class="card">
-        <h2>3. Obfuscated Logic (Regex Match)</h2>
-        <p>This script looks for <code>Date.now</code> but the code is messy. Use a Regex to find the <code>kill_me_logic</code> string.</p>
-        <div id="status-c" class="status">Obfuscated Script Active (Filter Failed)</div>
-    </div>
     <script>
         (function() {
-            var _0x4f2 = Date.now();
-            var action = "kill_me_logic"; 
-            document.getElementById('status-c').innerText = "✅ Obfuscated Script Ran";
-            document.getElementById('status-c').style.background = "#e8f5e9";
-            document.getElementById('status-c').style.color = "#2e7d32";
+            const secret = "bad-actor";
+            console.log("Malicious Script checking in..."); 
+            // If the script isn't killed, this runs:
+            document.getElementById('status-b').innerText = "❌ Malicious Script Finished";
+            document.getElementById('status-b').className = "status aborted";
         })();
     </script>
 
