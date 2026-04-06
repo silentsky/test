@@ -19,17 +19,22 @@
         Script Status: RUNNING (Property not aborted)
     </div>
 
-    <script>
-        // We define a property that the scriptlet will look for
-        window.badBotActive = true;
+<script>
+    // 1. Define the property
+    window.badBotActive = true;
 
-        // A simple loop to simulate "annoying" behavior
+    // 2. Wrap the "bad" action in a function or a slight delay
+    // This gives uBO a better chance to hook the 'get' action
+    function checkStatus() {
         if (window.badBotActive) {
-            console.log("The 'Bad Bot' script is executing...");
-            document.getElementById('status').innerText = "Script Status: RUNNING (Property Found)";
+            console.log("If you see this, acis FAILED.");
+            document.getElementById('status').innerText = "Script Status: RUNNING (Failed to Abort)";
             document.getElementById('status').className = "running";
         }
-    </script>
+    }
+
+    checkStatus();
+</script>
 
 </body>
 </html>
