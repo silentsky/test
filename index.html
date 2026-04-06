@@ -2,61 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>uBlock Origin ACIS Test Lab</title>
+    <title>uBO ACIS Advanced Lab</title>
     <style>
-        body { font-family: sans-serif; line-height: 1.6; padding: 20px; background: #f4f4f9; }
-        .box { border: 2px solid #ccc; padding: 15px; margin-bottom: 20px; background: white; border-radius: 8px; }
-        .success { color: green; font-weight: bold; }
-        .fail { color: red; font-weight: bold; }
-        code { background: #eee; padding: 2px 4px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px; background: #eef2f3; }
+        .card { background: white; border-radius: 10px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .status { padding: 10px; border-radius: 5px; margin-top: 10px; font-weight: bold; background: #ffebee; color: #c62828; }
+        code { background: #333; color: #f8f8f2; padding: 2px 6px; border-radius: 4px; }
+        h2 { margin-top: 0; color: #2c3e50; }
     </style>
 </head>
 <body>
 
-    <h1>uBlock Origin ACIS Test Lab</h1>
-    <p>Use these scenarios to practice writing <code>##+js(acis, ...)</code> filters.</p>
+    <h1>Advanced ACIS Practice</h1>
 
-    <div class="box">
-        <h3>Scenario 1: Simple Property (Math)</h3>
-        <p>This script checks <code>Math.random()</code>. If the filter works, the script will crash before it prints "Execution Finished".</p>
-        <div id="status-1" class="fail">Script Executed Successfully (Filter NOT working)</div>
+    <div class="card">
+        <h2>1. Deep Property Chains</h2>
+        <p>This script checks <code>window.performance.navigation.type</code>. You must target the specific sub-property.</p>
+        <div id="status-a" class="status">Script Active (Filter Failed)</div>
     </div>
-
     <script>
         (function() {
-            // Accessing Math will trigger the acis trap if configured
-            var value = Math.random(); 
-            document.getElementById('status-1').innerText = "Script Executed Successfully (Filter NOT working)";
-            console.log("Scenario 1: Math accessed.", value);
+            const navType = window.performance.navigation.type;
+            document.getElementById('status-a').innerText = "✅ Script Completed Execution";
+            document.getElementById('status-a').style.background = "#e8f5e9";
+            document.getElementById('status-a').style.color = "#2e7d32";
         })();
     </script>
 
-    <div class="box">
-        <h3>Scenario 2: Specific String Match</h3>
-        <p>This script uses <code>navigator.userAgent</code>. We want to block scripts containing the word <code>"SecretToken"</code>.</p>
-        <div id="status-2" class="fail">Secret Script Ran (Filter NOT working)</div>
+    <div class="card">
+        <h2>2. Data URI Script (The 1.37.0+ Feature)</h2>
+        <p>This script isn't text; it's a Base64 encoded <code>src</code> attribute. This mimics modern obfuscation.</p>
+        <div id="status-b" class="status">Base64 Script Active (Filter Failed)</div>
     </div>
+    <script src="data:text/javascript;base64,Y29uc29sZS5sb2coJ0Jhc2U2NCBSYW4nKTsgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3N0YXR1cy1iJykuaW5uZXJUZXh0ID0gJ+oZVCBCYXNlNjQgRGVjb2RlZCAmIFJhbic7IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdzdGF0dXMtYicpLnN0eWxlLmJhY2tncm91bmQgPSAnI2U4ZjVlOSc7IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdzdGF0dXMtYicpLnN0eWxlLmNvbG9yID0gJyMyZTdkMzInOw=="></script>
 
+    <div class="card">
+        <h2>3. Obfuscated Logic (Regex Match)</h2>
+        <p>This script looks for <code>Date.now</code> but the code is messy. Use a Regex to find the <code>kill_me_logic</code> string.</p>
+        <div id="status-c" class="status">Obfuscated Script Active (Filter Failed)</div>
+    </div>
     <script>
         (function() {
-            const spy = navigator.userAgent;
-            const token = "SecretToken"; // The filter should look for this string
-            document.getElementById('status-2').innerText = "Secret Script Ran (Filter NOT working)";
-            console.log("Scenario 2: Ran with " + token);
-        })();
-    </script>
-
-    <div class="box">
-        <h3>Scenario 3: Property Chain</h3>
-        <p>This script accesses <code>window.document.cookie</code>. Target the property <code>document.cookie</code>.</p>
-        <div id="status-3" class="fail">Cookie Script Ran (Filter NOT working)</div>
-    </div>
-
-    <script>
-        (function() {
-            var c = document.cookie;
-            document.getElementById('status-3').innerText = "Cookie Script Ran (Filter NOT working)";
-            console.log("Scenario 3: Cookie accessed.");
+            var _0x4f2 = Date.now();
+            var action = "kill_me_logic"; 
+            document.getElementById('status-c').innerText = "✅ Obfuscated Script Ran";
+            document.getElementById('status-c').style.background = "#e8f5e9";
+            document.getElementById('status-c').style.color = "#2e7d32";
         })();
     </script>
 
