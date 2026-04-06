@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>uBO Scriptlet Test Page</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; }
+        #status { padding: 10px; border-radius: 5px; font-weight: bold; }
+        .running { background-color: #ffcccc; color: #990000; }
+        .blocked { background-color: #ccffcc; color: #006600; }
+    </style>
+</head>
+<body>
+
+    <h1>uBO Scriptlet Lab</h1>
+    <p>Target property: <code>window.badBotActive</code></p>
+    
+    <div id="status" class="running">
+        Script Status: RUNNING (Property not aborted)
+    </div>
+
+    <script>
+        // We define a property that the scriptlet will look for
+        window.badBotActive = true;
+
+        // A simple loop to simulate "annoying" behavior
+        if (window.badBotActive) {
+            console.log("The 'Bad Bot' script is executing...");
+            document.getElementById('status').innerText = "Script Status: RUNNING (Property Found)";
+            document.getElementById('status').className = "running";
+        }
+    </script>
+
+</body>
+</html>
