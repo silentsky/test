@@ -2,53 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>uBO Selective ACIS Lab</title>
+    <title>uBO Signature Practice</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
-        .container { display: flex; gap: 20px; }
-        .card { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .status { margin-top: 15px; padding: 10px; font-weight: bold; border: 1px solid #ddd; }
-        .running { background: #fff3cd; color: #856404; }
-        .finished { background: #d4edda; color: #155724; }
-        .aborted { background: #f8d7da; color: #721c24; }
+        body { font-family: 'Courier New', Courier, monospace; padding: 30px; background: #1a1a1a; color: #00ff00; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .module { border: 1px solid #00ff00; padding: 15px; background: #222; }
+        .status { margin-top: 10px; padding: 5px; font-weight: bold; text-align: center; border: 1px solid #444; }
+        .neutral { color: #888; }
+        .alive { color: #00ff00; background: #003300; }
+        .killed { color: #ff4444; background: #330000; }
+        h2 { border-bottom: 1px solid #00ff00; padding-bottom: 5px; }
     </style>
 </head>
 <body>
 
-    <h1>Targeted Script Killing</h1>
-    <p>Both scripts below use <code>console.log</code>. Your goal is to kill <strong>only</strong> the one containing the word <code>"bad-actor"</code>.</p>
+    <h1>Script Signature Laboratory</h1>
+    <p>Target: <code>window.navigator</code> property access.</p>
 
-    <div class="container">
-        <div class="card">
-            <h2>Script A (Safe)</h2>
-            <p>Contains: <code>"everything-is-fine"</code></p>
-            <div id="status-a" class="status running">Waiting...</div>
+    <div class="grid">
+        <div class="module">
+            <h2>1. Analytics Script</h2>
+            <p>Signature: <code>"UA-999-TRACK"</code></p>
+            <div id="m1" class="status neutral">OFFLINE</div>
         </div>
 
-        <div class="card">
-            <h2>Script B (Malicious)</h2>
-            <p>Contains: <code>"bad-actor"</code></p>
-            <div id="status-b" class="status running">Waiting...</div>
+        <div class="module">
+            <h2>2. Ad-Server Engine</h2>
+            <p>Signature: <code>"get_ad_slots"</code></p>
+            <div id="m2" class="status neutral">OFFLINE</div>
+        </div>
+
+        <div class="module">
+            <h2>3. User Auth (Safe)</h2>
+            <p>Signature: <code>"session_id"</code></p>
+            <div id="m3" class="status neutral">OFFLINE</div>
+        </div>
+
+        <div class="module">
+            <h2>4. Anti-Adblock</h2>
+            <p>Signature: <code>"detect_adblock_v2"</code></p>
+            <div id="m4" class="status neutral">OFFLINE</div>
         </div>
     </div>
 
     <script>
         (function() {
-            const secret = "everything-is-fine";
-            console.log("Safe Script checking in..."); 
-            // If the script isn't killed, this runs:
-            document.getElementById('status-a').innerText = "✅ Safe Script Finished";
-            document.getElementById('status-a').className = "status finished";
+            const engine = navigator.userAgent;
+            const tracker = "UA-999-TRACK";
+            document.getElementById('m1').innerText = "RUNNING";
+            document.getElementById('m1').className = "status alive";
         })();
     </script>
 
     <script>
         (function() {
-            const secret = "bad-actor";
-            console.log("Malicious Script checking in..."); 
-            // If the script isn't killed, this runs:
-            document.getElementById('status-b').innerText = "❌ Malicious Script Finished";
-            document.getElementById('status-b').className = "status aborted";
+            const data = navigator.language;
+            const action = "get_ad_slots";
+            document.getElementById('m2').innerText = "RUNNING";
+            document.getElementById('m2').className = "status alive";
+        })();
+    </script>
+
+    <script>
+        (function() {
+            const info = navigator.platform;
+            const auth = "session_id";
+            document.getElementById('m3').innerText = "RUNNING";
+            document.getElementById('m3').className = "status alive";
+        })();
+    </script>
+
+    <script>
+        (function() {
+            const check = navigator.onLine;
+            const logic = "detect_adblock_v2";
+            document.getElementById('m4').innerText = "RUNNING";
+            document.getElementById('m4').className = "status alive";
         })();
     </script>
 
